@@ -59,7 +59,7 @@ body {
   
 #main_container {
     padding: 5px 10px 0px 10px;
-    background-color: white;
+    background-image: url("./pics/whitepattern.png");
     width: 80%;
     border-right: 3px var(--accent-color) dashed;
     border-left: 3px var(--accent-color) dashed;
@@ -72,11 +72,13 @@ header {
     justify-content: center;
     background-image: url("./pics/legend\ of\ zelda\ wallpaper\ 2\ pixeled.png");
     background-position: center;
+    background-repeat: no-repeat;
 }
 header > h1 {
     text-align: center;
     font-size: 4rem;
     color: white;
+    letter-spacing: 7px;
 }
 header > #header-cat{
     position: absolute;
@@ -162,6 +164,24 @@ main-right > #contact-header {
     background-color: var(--primary-color);
     color: white;
     padding: 2px;
+    margin: 5px;
+}
+main-right > form > textarea {
+    border: 2px var(--accent-color) dashed;
+    width: 100%;
+    resize: none;
+}
+main-right > form > textarea:active {
+    border: 2px var(--accent-color) dashed;
+    width: 100%;
+    resize: none;
+}
+main-right > form > #submit-button {
+    margin: 5px;
+    background-image: url("./pics/blue\ pattern.png");
+    font-size: 2rem;
+    background-position: center;
+    border: none;
 }
 
 
