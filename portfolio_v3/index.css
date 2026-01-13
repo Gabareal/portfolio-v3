@@ -1,0 +1,184 @@
+:root {
+    --primary-color: rgb(67, 214, 113);
+    --accent-color: rgb(15, 109, 24);
+}
+
+.micro-5-regular {
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+.sixtyfour-font {
+    font-family: "Sixtyfour", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "BLED" 0,
+        "SCAN" 0;
+}
+
+.quote-font {
+    font-family: "Jacquarda Bastarda 9", serif;
+    font-weight: 400;
+    font-style: normal;
+}  
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-image: url("./pics/grass2.png");
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: var(--primary-color);
+}
+::-webkit-scrollbar-track-piece {
+    background-color: var(--accent-color);
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+  
+#main_container {
+    padding: 5px 10px 0px 10px;
+    background-color: white;
+    width: 80%;
+    border-right: 3px var(--accent-color) dashed;
+    border-left: 3px var(--accent-color) dashed;
+}
+
+header {
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("./pics/legend\ of\ zelda\ wallpaper\ 2\ pixeled.png");
+    background-position: center;
+}
+header > h1 {
+    text-align: center;
+    font-size: 4rem;
+    color: white;
+}
+header > #header-cat{
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+    border: 2px var(--accent-color) solid;
+    right: 22%;
+    top: 12%;
+    transform: rotate(10deg);
+}
+
+main {
+    padding: 0px;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+main-middle {
+    padding-left: 5px;
+    padding-right: 5px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+main-middle {
+    font-size: 1rem;
+}
+
+main-middle > #subtext {
+    font-size: 1.5rem;
+    padding: 10px;
+    grid-column: 1 / span 3;
+    background-image: url("./pics/blue\ pattern.png");
+    margin: 0px;
+    height: 20px;
+}
+
+.divider {
+    width: 100%;
+    height: 0px;
+    border-top: 2px var(--accent-color) dashed;
+    grid-column: 1 / span 3;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+main-middle > #about-me {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    max-width: 500px;
+    margin: 0px;
+
+}
+main-middle > #about-me > #about-me-header {
+    background-color: var(--primary-color);
+    color: white;
+    max-width: 90%;;
+}
+main-middle > #Pfp {
+    max-width: 100%;
+    border-radius: 5%;
+    border: 1px var(--accent-color) solid;
+}
+
+
+main-right {
+    border-left: 2px var(--accent-color) solid;
+    padding: 5px;
+    max-width: 100%;
+}
+
+main-right > h3 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+main-right > #quote {
+    background-image: url("./pics/tiles2.png");
+    color: white;
+    padding: 5px;
+}
+
+main-right > #contact-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2px;
+}
+
+
+main-left {
+    border-right: 2px var(--accent-color) solid;
+    padding: 5px;
+}
+main-left > h3 {
+    font-size: 1rem;
+    text-align: center;
+}
+main-left > #links-list {
+    font-size: 50px;
+    list-style-position: inside;
+    max-width: 100%;
+}
+
+.gif {
+    max-width:100%;
+}
