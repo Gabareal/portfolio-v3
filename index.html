@@ -2,7 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My portfolio!</title>
+    <title>Gabriel's site</title>
+    <link rel="icon" type="image/x-icon" href="./pics/kitkat.png">
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <img src="./pics/cursor.png" alt="" class="customCursor">
     <div id="main_container">
         <header class="quote-font">
             <h1>Gabriel's portfolio</h1>
@@ -28,17 +30,9 @@
                 <h3 class="sixtyfour-font">Update Log</h3>
                 <div id="updateLog-list-container">
                     <ul class="updateLog-list micro-5-regular">
-                        <li>13/1: Start of website! Added banner, about and overall design.</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
-                        <li>14/1: Start of website!</li>
+                        <li>15/1/26: Added update log, project sub-page, credits and day counter</li>
+                        <li>14/1/26: Added contact that does nothing (important)</li>
+                        <li>13/1/26: Start of website! Added banner, about and overall design.</li>
                     </ul>
                 </div>
                 <h3 class="sixtyfour-font">Credits</h3>
@@ -46,12 +40,11 @@
                     <li>NO AI WAS USED IN THE WRITING OR DESIGN OF WEBSITE<br>Although I do use some AI assistance in some of my projects, this website was entirely hand-coded</li>
                     <img src="./pics/support-human-creators-banner.gif" alt="" class="banner">
                     <li>White and green background patterns made by myself with the help of pixilart.com</li>
-                    <li>Banner image from <a href="https://www.pinterest.com/pin/10485011622197426/">here</a></li>
-                    <li>Gif of link from <a href="https://tenor.com/view/link-zelda-bell-dink-donk-link-dink-donk-gif-18234739230259027772/">here</a></li> 
-                    <li>Gif of waterfall from <a href="https://www.pinterest.com/pin/10485011622197426/">here</a></li> 
+                    <li>Banner image is a pixelated form of <a href="https://www.pinterest.com/pin/10485011622197426/">this</a></li>
+                    <li>Gifs that are not made by me are clickable and redirects you to where i found them! If you're curious about any gif, click on them to see where they came from. If they have none, then they are made by me!</li> 
                     <li>Shout out to Zhen Zhou for helping me with this site! See his <a href="https://tan-zhen-zhou.github.io/webfolio/">site</a> :)</li>
                 </ul>
-                <img class="gif" src="./pics/skeleton.gif" alt="">
+                <a href="https://giphy.com/stickers/retro-skeleton-skateboard-lhoT3iiEaeL59R6YX8" target="_blank"><img class="gif" src="./pics/skeleton.gif" alt=""></a>
             </main-left>
             <main-middle>
                 <h3 class="micro-5-regular" id="subtext">Cool stuff since 2008 :)</h3>
@@ -74,26 +67,53 @@
                 <div id="myProjects-container">
                     <div class="project-container">
                         <div class="project-img-container">
-                            <img src="./pics/projects/project1.png" alt="">
+                            <img src="./pics/projects/project-lostAndFound.png" alt="">
                         </div>
                         <div class="project-desc-container">
                             <h2 class="micro-5-regular">Lost & Found site</h2>
                             <h3 class="micro-5-regular">See it <a href="https://coursework-website-v2.vercel.app">here</a>!</h3>
-                            <p class="micro-5-regular">This was a team project done in Sec 3 with 3 of my friends. The task was to design a digital solution to solve a real-world problem, so our idea was to come up with an accessible lost-and-found app! Although it was never implemented to an actual solution, it allowed me to home my skills in javascript, and learn more about </p>
+                            <p class="micro-5-regular">
+                                This was a team project done in Sec 3 with 3 of my friends. 
+                                The task was to design a digital solution to solve a real-world problem, so our idea was to come up with an accessible lost-and-found app! 
+                                Although it was never implemented to an actual solution, it taught me a lot about javascript and firebase! 
+                                It was one of my first times using an API and interacting with data storage, login systems with cookies, etc. 
+                                <br>As you can see, the UI is very "minimalist" at best. Some buttons may not work any more as the firebase token has expired, but feel free to look through the code! (if you want to)
+                            </p>
                         </div>
                     </div>
                     <div class="project-container">
-                        
+                        <div class="project-img-container">
+                            <img src="./pics/projects/project-serviceLearning.png" alt="">
+                        </div>
+                        <div class="project-desc-container">
+                            <h2 class="micro-5-regular">Service Learning Showcase</h2>
+                            <h3 class="micro-5-regular">See it <a href="https://gabareal.github.io/servicelearning/">here</a>!</h3>
+                            <p class="micro-5-regular">
+                                My class had a service learning / volunteering session with Willing Hearts, a soup kitchen.
+                                Not sure exactly why, but I made this site to showcase our efforts!
+                                It's a different style and aesthetic compared to this site, so you can sort of see me grow and jump between styles from modern to minimalism or retro.
+                            </p>
+                        </div>
                     </div>
                     <div class="project-container">
-                        
+                        <div class="project-img-container">
+                            <img src="./pics/projects/project-handpose.png" alt="">
+                        </div>
+                        <div class="project-desc-container">
+                            <h2 class="micro-5-regular">Camera-based file selector DEMO</h2>
+                            <h3 class="micro-5-regular">See it <a href="https://gabareal.github.io/handposedirectory/">here</a>!</h3>
+                            <p class="micro-5-regular">
+                                I was inspired by how Iron Man uses his hands in the air to select stuff on his holographic table, so this site is an attempt of recreating that same effect, but at its very barebones.
+                                Although it is one of my cooler mini-projects, a lot of code was made with the help of generative AI, with the UI being entirely AI generated. So take that as you will.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
             </main-middle>
             <main-right>
                 <div id="quote" class="quote-font">"Courage need not be remembered, for it is never forgotten."</div>
-                <img src="./pics/water.gif" alt="" class="gif">
+                <a href="https://giphy.com/gifs/art-cinemagraph-collage-ozYY6pgJbszbGAwtFM" target="_blank"><img src="./pics/water.gif" alt="" class="gif"></a>
                 <h2 class="quote-font header" id="contact-header">Contact</h2>
                 <form action="/">
                     <label for="things" class="micro-5-regular">Whats on your mind?</label>
@@ -104,9 +124,10 @@
                     <div class="sixtyfour-font" id="dayCounter-header">DAYS SINCE DEPLOYMENT</div>
                     <div id="dayCounter-counter"></div>
                 </div>
+                <a href="https://giphy.com/stickers/pixel-computer-lowpoly-b6fTJKkVNdFOO8erVi" target="_blank"><img src="./pics/retro computer.gif" alt="" class="gif"></a>
             </main-right>
         </main>
     </div>
+    <script src="./index.js"></script>
 </body>
-<script src="./index.js"></script>
 </html>
