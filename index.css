@@ -26,7 +26,12 @@ html, body {
     font-weight: 400;
     font-style: normal;
 }  
-
+.customCursor {
+    width: 18px;
+    height: 23px;
+    position: absolute;
+    pointer-events: none;
+}
 body {
     margin: 0px;
     padding: 0px;
@@ -36,6 +41,7 @@ body {
     overflow-x: hidden;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    cursor: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -150,8 +156,9 @@ main-middle > #aboutMe-pfp {
     max-width: 150px;
 }
 .project-desc-container > * {
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
 }
 
 
@@ -226,6 +233,8 @@ main-left > #updateLog-list-container {
     max-height: 100px;
     width: 100%;
     overflow-y: scroll;
+    border-top: 2px var(--accent-color) dashed;
+    border-bottom: 2px var(--accent-color) dashed;
 }
 
 .banner{
