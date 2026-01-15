@@ -7,51 +7,89 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jacquarda+Bastarda+9&family=Micro+5&family=Sixtyfour&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div id="main_container">
         <header class="quote-font">
             <h1>Gabriel's portfolio</h1>
-            <img src="./pics/butter_cat.jpg" alt="My pfp here" id="header-cat">
+            <img src="./pics/butter_cat.png" alt="My pfp here" id="header-butterCat">
+            <img src="./pics/money_cat.png" alt="My pfp here" id="header-moneyCat">
         </header>
         <main>
             <main-left>
                 <div class="tenor-gif-embed gif" data-postid="18234739230259027772" data-share-method="host" data-aspect-ratio="1.33333" data-width="100%"></div><script type="text/javascript" async src="https://tenor.com/embed.js"></script>
                 <h3 class="sixtyfour-font">Links</h3>
-                <ol class="links-list micro-5-regular">
+                <ol class="micro-5-regular" id="links-list">
                     <li>Achievements</li>
                     <li>Projects</li>
                     <li>test3</li>
                 </ol>
+                <h3 class="sixtyfour-font">Update Log</h3>
+                <div id="updateLog-list-container">
+                    <ul class="updateLog-list micro-5-regular">
+                        <li>13/1: Start of website! Added banner, about and overall design.</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                        <li>14/1: Start of website!</li>
+                    </ul>
+                </div>
                 <h3 class="sixtyfour-font">Credits</h3>
                 <ul class="credits-list micro-5-regular">
-                    <li>NO AI WAS USED IN THE WRITING OR DESIGN OF WEBSITE</li>
+                    <li>NO AI WAS USED IN THE WRITING OR DESIGN OF WEBSITE<br>Although I do use some AI assistance in some of my projects, this website was entirely hand-coded</li>
                     <img src="./pics/support-human-creators-banner.gif" alt="" class="banner">
                     <li>White and green background patterns made by myself with the help of pixilart.com</li>
                     <li>Banner image from <a href="https://www.pinterest.com/pin/10485011622197426/">here</a></li>
                     <li>Gif of link from <a href="https://tenor.com/view/link-zelda-bell-dink-donk-link-dink-donk-gif-18234739230259027772/">here</a></li> 
                     <li>Gif of waterfall from <a href="https://www.pinterest.com/pin/10485011622197426/">here</a></li> 
+                    <li>Shout out to Zhen Zhou for helping me with this site! See his <a href="https://tan-zhen-zhou.github.io/webfolio/">site</a> :)</li>
                 </ul>
+                <img class="gif" src="./pics/skeleton.gif" alt="">
             </main-left>
             <main-middle>
                 <h3 class="micro-5-regular" id="subtext">Cool stuff since 2008 :)</h3>
                 <div class="divider"></div>
-                <div id="about-me-container">
-                    <div id="about-me-desc-container">
-                        <h2 class="quote-font" id="about-me-header">About me</h2>
-                        <p id="about-me-para">
+                <div id="aboutMe-container">
+                    <div id="aboutMe-desc-container">
+                        <h2 class="quote-font header" id="aboutMe-header">About me</h2>
+                        <p class="micro-5-regular" id="aboutMe-para">
                             Hi! My name is Gabriel!<br>
-                            I like to code stuff and do homelabbing! Apart from playing CTFs, studying or homelabbing, I like to cook and play games<br>
-                            This is where I'll post some of the projects I'm working on and also some achievements that I have!<br>
-                            It's currently a work in progress, so any feedback would be appreciated
+                            I like to code stuff and make cool projects in general. Apart of doing CTFs and homelabbing, I like to cook and play games.<br>
+                            I'm not really a front-end developer, so apologies if you experience any bugs in my site. The design is larely inspired by early internet sites and some modern spinoffs on them, such as <a href="https://miserabledolly.net/home">miserabledolly.net</a>
                         </p>
                     </div>
-                    <div id="about-me-pfp-container">
-                        <img src="./pics/pfp.jpeg" alt="My face!" id="about-me-pfp">
+                    <div id="aboutMe-pfp-container">
+                        <img src="./pics/pfp.jpeg" alt="My face!" id="aboutMe-pfp">
                     </div>
                 </div>
                 <div class="divider"></div>
-                <div class="quote-font header">My hobbies</div>
+                <div class="quote-font header" id="myProjects-header">My Projects</div>
+                <div id="myProjects-container">
+                    <div class="project-container">
+                        <div class="project-img-container">
+                            <img src="./pics/projects/project1.png" alt="">
+                        </div>
+                        <div class="project-desc-container">
+                            <h2 class="micro-5-regular">Lost & Found site</h2>
+                            <h3 class="micro-5-regular">See it <a href="https://coursework-website-v2.vercel.app">here</a>!</h3>
+                            <p class="micro-5-regular">This was a team project done in Sec 3 with 3 of my friends. The task was to design a digital solution to solve a real-world problem, so our idea was to come up with an accessible lost-and-found app! Although it was never implemented to an actual solution, it allowed me to home my skills in javascript, and learn more about </p>
+                        </div>
+                    </div>
+                    <div class="project-container">
+                        
+                    </div>
+                    <div class="project-container">
+                        
+                    </div>
+                </div>
+
             </main-middle>
             <main-right>
                 <div id="quote" class="quote-font">"Courage need not be remembered, for it is never forgotten."</div>
@@ -62,9 +100,13 @@
                     <textarea name="things" id="" cols="50" rows="10" class="micro-5-regular"></textarea>
                     <input type="submit" id="submit-button" class="micro-5-regular" value="send to me! :)">
                 </form>
+                <div id="dayCounter-container">
+                    <div class="sixtyfour-font" id="dayCounter-header">DAYS SINCE DEPLOYMENT</div>
+                    <div id="dayCounter-counter"></div>
+                </div>
             </main-right>
         </main>
     </div>
-
 </body>
+<script src="./index.js"></script>
 </html>
