@@ -2,6 +2,9 @@
     --primary-color: rgb(67, 214, 113);
     --accent-color: rgb(15, 109, 24);
 }
+html, body {
+    overscroll-behavior: none;
+}
 
 .micro-5-regular {
     font-family: "Micro 5", sans-serif;
@@ -35,34 +38,19 @@ body {
     scrollbar-width: none;  /* Firefox */
 }
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
 ::-webkit-scrollbar-track {
-    background-color: var(--primary-color);
-}
-::-webkit-scrollbar-track-piece {
-    background-color: var(--accent-color);
-}
-   
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background-image: url("./pics/grass2.png");
 }
   
 #main_container {
-    padding: 5px 10px 0px 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
     background-image: url("./pics/whitepattern.png");
     width: 80%;
     border-right: 3px var(--accent-color) dashed;
     border-left: 3px var(--accent-color) dashed;
+    min-height: fit-content;
 }
 
 header {
@@ -78,18 +66,25 @@ header > h1 {
     text-align: center;
     font-size: 4rem;
     color: white;
-    letter-spacing: 7px;
+    letter-spacing: 5px;
 }
-header > #header-cat{
+header > #header-butterCat{
     position: absolute;
     width: 80px;
     height: 80px;
-    border-radius: 10%;
-    border: 2px var(--accent-color) solid;
-    right: 22%;
+    right: 15%;
     top: 12%;
     transform: rotate(10deg);
 }
+header > #header-moneyCat{
+    position: absolute;
+    width: 80px;
+    left: 8%;
+    top: 2%;
+    transform: rotate(-30deg);
+}
+
+
 
 main {
     padding: 0px;
@@ -116,39 +111,50 @@ main-middle > #subtext {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-main-middle > #about-me-container {
+main-middle > #aboutMe-container {
     max-height: 50vh;
     display: grid;
     grid-template-columns: 2fr 1fr;
 }
-main-middle > #about-me-container > #about-me-header {
-    grid-area: header;
-}
-main-middle > #about-me-container > #about-me-para {
-    grid-area: para;
-}
-main-middle > #about-me-container > #about-me-pfp {
-    grid-area: pic;
-    max-width: 300px;
-}
-#about-me-pfp-container {
+#aboutMe-pfp-container {
     overflow: hidden;
-    max-width: 100%;
+    max-width: 200px;
     max-height: 100%;
 }
-#about-me-pfp {
-    width: inherit;
+#aboutMe-pfp-container > #aboutMe-pfp {
+    max-width: 100%;
 }
 .header {
     background-color: var(--primary-color);
     color: white;
-    max-width: 90%;;
+    max-width: 90%;
+    font-size: 1.5rem;
 }
-main-middle > #Pfp {
+main-middle > #aboutMe-pfp {
     max-width: 100%;
     border-radius: 5%;
     border: 1px var(--accent-color) solid;
+    max-width: 200px;
 }
+.project-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+.project-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.project-container > .project-img-container > img {
+    aspect-ratio: 1 / 1;
+    max-width: 150px;
+}
+.project-desc-container > * {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+
 
 
 main-right {
@@ -156,12 +162,10 @@ main-right {
     padding: 5px;
     max-width: 100%;
 }
-
 main-right > h3 {
     font-size: 1rem;
     text-align: center;
 }
-
 main-right > #quote {
     background-image: url("./pics/tiles2.png");
     color: white;
@@ -184,6 +188,25 @@ main-right > form > #submit-button {
     background-position: center;
     border: none;
 }
+main-right  > #dayCounter-container {
+    width: 90%;
+    height: 100px;
+    border: 1px black solid;
+    background-color: gray;
+    padding: 10px
+}
+main-right > #dayCounter-container > #dayCounter-header {
+    font-size: 0.7rem;
+}
+main-right > #dayCounter-container > #dayCounter-header::before {
+    height: 1px;
+    color: black;
+    width: 10px;
+    background-color: black;
+}
+
+
+
 
 
 main-left {
@@ -195,10 +218,16 @@ main-left > h3 {
     text-align: center;
 }
 main-left > #links-list {
-    font-size: 50px;
+    font-size: 1.5rem;
     list-style-position: inside;
     max-width: 100%;
 }
+main-left > #updateLog-list-container {
+    max-height: 100px;
+    width: 100%;
+    overflow-y: scroll;
+}
+
 .banner{
     width: 100px;
     height: 30px;
