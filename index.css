@@ -1,0 +1,258 @@
+:root {
+    --primary-color: rgb(67, 214, 113);
+    --accent-color: rgb(15, 109, 24);
+}
+html, body {
+    overscroll-behavior: none;
+}
+@font-face {
+    font-family: 'VCR OSD mono';
+    src: url('fonts/VCR_OSD_MONO_1.001.ttf')
+}
+.VCR-OSD-mono {
+    font-family: 'VCR OSD mono';
+}
+.micro-5-regular {
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+.sixtyfour-font {
+    font-family: "Sixtyfour", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "BLED" 0,
+        "SCAN" 0;
+}
+
+.quote-font {
+    font-family: "Jacquarda Bastarda 9", serif;
+    font-weight: 400;
+    font-style: normal;
+}  
+.customCursor {
+    width: 18px;
+    height: 23px;
+    position: absolute;
+    pointer-events: none;
+}
+body {
+    margin: 0px;
+    padding: 0px;
+    background-image: url("./pics/grass2.png");
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    cursor: none;
+}
+
+::-webkit-scrollbar-track {
+    background-image: url("./pics/grass2.png");
+}
+  
+#main_container {
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    background-image: url("./pics/whitepattern.png");
+    width: 80%;
+    border-right: 3px var(--accent-color) dashed;
+    border-left: 3px var(--accent-color) dashed;
+    min-height: fit-content;
+}
+
+header {
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("./pics/legend\ of\ zelda\ wallpaper\ 2\ pixeled.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+header > h1 {
+    text-align: center;
+    font-size: 4rem;
+    color: white;
+    letter-spacing: 5px;
+}
+header > #header-butterCat{
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    right: 15%;
+    top: 12%;
+    transform: rotate(10deg);
+}
+header > #header-moneyCat{
+    position: absolute;
+    width: 80px;
+    left: 8%;
+    top: 2%;
+    transform: rotate(-30deg);
+}
+
+
+
+main {
+    padding: 0px;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+main-middle {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 1rem;
+}
+main-middle > #subtext {
+    font-size: 1.5rem;
+    padding: 10px;
+    background-image: url("./pics/blue\ pattern.png");
+    margin: 0px;
+    height: 20px;
+}
+.divider {
+    width: 100%;
+    height: 0px;
+    border-top: 2px var(--accent-color) dashed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+main-middle > #aboutMe-container {
+    max-height: 50vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+#aboutMe-pfp-container {
+    overflow: hidden;
+    max-width: 200px;
+    max-height: 100%;
+}
+#aboutMe-pfp-container > #aboutMe-pfp {
+    max-width: 100%;
+}
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    max-width: 90%;
+    font-size: 1.5rem;
+}
+main-middle > #aboutMe-pfp {
+    max-width: 100%;
+    border-radius: 5%;
+    border: 1px var(--accent-color) solid;
+    max-width: 200px;
+}
+.project-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+.project-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.project-container > .project-img-container > img {
+    aspect-ratio: 1 / 1;
+    max-width: 150px;
+}
+.project-desc-container > * {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
+}
+
+
+
+
+main-right {
+    border-left: 2px var(--accent-color) solid;
+    padding: 5px;
+    max-width: 100%;
+}
+main-right > h3 {
+    font-size: 1rem;
+    text-align: center;
+}
+main-right > #quote {
+    background-image: url("./pics/tiles2.png");
+    color: white;
+    padding: 5px;
+}
+main-right > form > textarea {
+    border: 2px var(--accent-color) dashed;
+    width: 100%;
+    resize: none;
+}
+main-right > form > textarea:active {
+    border: 2px var(--accent-color) dashed;
+    width: 100%;
+    resize: none;
+}
+main-right > form > #submit-button {
+    margin: 5px;
+    background-image: url("./pics/blue\ pattern.png");
+    font-size: 2rem;
+    background-position: center;
+    border: none;
+}
+#dayCounter-container {
+    width: 90%;
+    height: fit-content;
+    border: 1px black solid;
+    background-color: gray;
+    padding: 10px
+}
+#dayCounter-header {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+#dayCounter-counter {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+}
+.time-data {
+    white-space: nowrap;
+}
+
+
+
+
+main-left {
+    border-right: 2px var(--accent-color) solid;
+    padding: 5px;
+}
+main-left > h3 {
+    font-size: 1rem;
+    text-align: center;
+}
+main-left > #links-list {
+    font-size: 1.5rem;
+    list-style-position: inside;
+    max-width: 100%;
+}
+main-left > #updateLog-list-container {
+    max-height: 100px;
+    width: 100%;
+    overflow-y: scroll;
+    border-top: 2px var(--accent-color) dashed;
+    border-bottom: 2px var(--accent-color) dashed;
+}
+
+.banner{
+    width: 100px;
+    height: 30px;
+    background-color: pink;
+}
+
+.gif {
+    max-width:100%;
+}
