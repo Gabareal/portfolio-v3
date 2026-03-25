@@ -1,0 +1,84 @@
+:root {
+    --primary-color: rgb(67, 214, 113);
+    --accent-color: rgb(15, 109, 24);
+}
+html, body {
+    overscroll-behavior: none;
+}
+
+@font-face {
+    font-family: 'VCR OSD mono';
+    src: url('fonts/VCR_OSD_MONO_1.001.ttf')
+}
+.VCR-OSD-mono {
+    font-family: 'VCR OSD mono';
+}
+.micro-5-regular {
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+.sixtyfour-font {
+    font-family: "Sixtyfour", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "BLED" 0,
+        "SCAN" 0;
+}
+.quote-font {
+    font-family: "Jacquarda Bastarda 9", serif;
+    font-weight: 400;
+    font-style: normal;
+}  
+
+.customCursor {
+    width: 18px;
+    height: 23px;
+    position: absolute;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-image: url("./pics/grass2.png");
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    cursor: none;
+}
+
+#mainContainer {
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    background-image: url("./pics/whitepattern.png");
+    width: 80%;
+    border-right: 3px var(--accent-color) dashed;
+    border-left: 3px var(--accent-color) dashed;
+    min-height: fit-content;
+}
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+}
+.divider-large {
+    height: 0px;
+    border: 1px solid gray;
+    margin: 2px;
+}
+
+.writeupCard-body {
+    display: flex;
+}
+.writeupCard-thumbnail {
+    width: 200px;
+    height: 200px;
+}
+.writeupCard-body-desc {
+    font-size: 20px;
+}

@@ -50,11 +50,7 @@ body {
     cursor: none;
 }
 
-::-webkit-scrollbar-track {
-    background-image: url("./pics/grass2.png");
-}
-  
-#main_container {
+#mainContainer {
     padding-right: 10px;
     padding-left: 10px;
     padding-top: 5px;
