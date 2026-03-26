@@ -71,14 +71,21 @@ h1 {
     border: 1px solid gray;
     margin: 2px;
 }
+.divider-medium {
+    height: 0px;
+    border: 1px solid gray;
+    margin: 10px;
+}
 
 .writeupCard-body {
     display: flex;
+    width: 90%;
 }
 .writeupCard-thumbnail {
     width: 200px;
     height: 200px;
+    margin-right: 10px;
 }
 .writeupCard-body-desc {
-    font-size: 20px;
+    font-size: 25px;
 }
