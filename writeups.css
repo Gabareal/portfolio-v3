@@ -33,11 +33,6 @@ html, body {
     font-style: normal;
 }  
 
-.customCursor {
-    width: 18px;
-    height: 23px;
-    position: absolute;
-}
 
 body {
     margin: 0px;
@@ -48,7 +43,6 @@ body {
     overflow-x: hidden;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-    cursor: none;
 }
 
 #mainContainer {
