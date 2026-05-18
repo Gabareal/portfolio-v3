@@ -1,6 +1,6 @@
 :root {
     --primary-color: rgb(67, 214, 113);
-    --accent-color: rgb(15, 109, 24);
+    --accent-color: rgb(64, 64, 64);
 }
 html, body {
     overscroll-behavior: none;
@@ -37,7 +37,7 @@ html, body {
 body {
     margin: 0px;
     padding: 0px;
-    background-image: url(".././pics/grass2.png");
+    background-image: url(".././pics/flower-bg.png");
     display: flex;
     justify-content: center;
     overflow-x: hidden;
