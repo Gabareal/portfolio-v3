@@ -1,0 +1,258 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Encryption - PicoCTF 2024</title>
+    <link rel="stylesheet" href="writeuptemplate.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacquarda+Bastarda+9&family=Micro+5&family=Sixtyfour&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="mainContainer">
+        <h1 class="story-title quote-font">Custom Encryption - PicoCTF 2024</h1>
+        <div class="divider-hard"></div>
+        <div class="para">
+            Description: <br>
+            Can you get sense of this code file and write the function that will decode the given encrypted file content. Find the encrypted file here flag_info and code file might be good to analyze and get the flag.
+        </div>
+        <div class="divider-soft"></div>
+        <div class="subheader">Inital recon</div>
+        <div class="para">
+            When it comes to these sort of reverse engineering challenges, I like to follow this methodology: <br>
+            1. Understand what the code does, what the functions do and what variables are being input. <br>
+            2. Write down the logic flow of the program <br>
+            3. Make a program that reverses the logic flow to get any secrets we need <br>
+            Looking through the code file, we can see that we have 6 functions. In order to not get overwhelmed, I like to take the functions one by one, understanding them what they do. Even if they end up being complicated, treating them as a “black box” and just knowing in general what it does also works. <br>
+        </div>
+        <div class="miniheader">generator</div>
+        <div class="para">
+            Simple enough, it takes in 3 variables g,x and p and returns g^x % p
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/Custom Encryption - PicoCTF 2024/generator.png" alt="">
+        </div>
+        <div class="miniheader">encrypt</div>
+        <div class="para">
+            Takes in a plaintext and a key. For every character in plaintext, multiply the ascii value of the character in plaintext by the key and 311.
+        </div>
+        <div class="miniheader">Is_prime</div>
+        <div class="para">
+            Checks if a number is prime using “naive trial division primality test”.
+        </div>
+        <div class="note">
+            Although you might not know the specific prime checking algorithm used (neither did I when I was solving), you can infer from the function name its function.
+        </div>
+        <div class="para">
+            To double check, we can iterate through every number from 1 to 100 and check if they return True for is_prime(number). Sure enough, is_prime(number) returns True for every prime number.
+        </div>
+        <div class="miniheader">dynamic_xor_encrypt</div>
+        <div class="para">
+            Two arguments, plaintext and text_key are given to return a cipher_text. From the for loop we can see that for every character in plaintext (starting from the end of plaintext), we add the character with the ascii value equivalent to the ascii value of the character in plaintext XOR the ascii value of the character chosen from text_key
+        </div>
+        <div class="code">
+            for i, char in enumerate(plaintext[::-1]): <br>
+            &emsp;key_char = text_key[i % key_length] <br>
+            &emsp;encrypted_char = chr(ord(char) ^ ord(key_char)) <br>
+            &emsp;cipher_text += encrypted_char <br>
+        </div>
+        <div class="para">
+            How would this look like? Lets say we want to encrypt our plaintext “gabbage” with a text_key of “abcd” <br>
+            1. Reverse “gabbage” to get “egabbag” <br>
+            2. XOR each character with “egabbag” with a different character from text_key. Once the chosen character from text_key “hits” the last character, “d”, wrap-around to use “a” instead <br>
+            3. Save the output of the XOR into cipher_text <br>
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/Custom Encryption - PicoCTF 2024/encryption-example.png" alt="">
+        </div>
+        <div class="note">
+            For readability’s sake the cipher text shown in the diagram is not the exact result of the XOR, like ‘e’ XOR ‘a’ does NOT give ‘f’.
+        </div>
+        <div class="miniheader">Test</div>
+        <div class="para">
+            This is the main function. We get two numbers, p and q, and check if at least one of them are a prime. If none of them are primes, the function exits. Then, a and b are a random integer chosen from a range p-10 to p and g-10 to g (inclusive) respectively. <br>
+            Next, u and v are defined using the generator function using g, a, p and g, b, p respectively. Variables key and b_key are defined using the generator function using v, a, p and u, b, p.
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/Custom Encryption - PicoCTF 2024/test-flow.png" alt="">
+        </div>
+        <div class="para">
+            A check is used to ensure that b_key is equal to key. If it is, shared_key is initialised as the value of key, if not the function returns. <br>
+            Finally, the cipher is calculated by passing in the plain_text into dynamic_xor_encrypt along with the text_key, and saving it as semi_cipher. semi_cipher is then passed into the encrypt function along with a shared_key to get the cipher.
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/Custom Encryption - PicoCTF 2024/logic-flow.png" alt="">
+        </div>
+        <div class="divider-soft"></div>
+        <div class="subheader">
+            Reversing the program
+        </div>
+        <div class="para">
+            Time to actually start coding! First, we look at the info we have. In enc_flag, we are given a, b and cipher.
+        </div>
+        <div class="code">
+            a = 90 <br>
+            b = 26 <br>
+            cipher is: [61578, 109472, 437888, 6842, 0, 2052 ... 47894, 82104, 116314] <br>
+        </div>
+        <div class="para">
+            Also, on the last line, we can see that the whole program is run with “trudeau” being the text_key for the test function.
+        </div>
+        <div class="code">
+            if __name__ == "__main__": <br>
+            &emsp;message = sys.argv[1] <br>
+            &emsp;test(message, "trudeau") <br>
+        </div>
+        <div class="para">
+            If we were to step by step reverse the program using cipher and the text_key, we can see that we fail as we don’t have the shared_key. Following the logic flow of the program, we can also see that the shared_key is calculated using p, g, a and b, with a and b being the variables we know. <br>
+            <br>
+            So to crack this, we have to find a valid p and g that will allow us to get the correct shared_key to get the correct plain_text. The first thing I noticed was the small range in which a and b are taken from, being 11 possible numbers depending on p and q.
+        </div>
+        <div class="code">
+            a = randint(p-10, p)
+            b = randint(g-10, g)
+        </div>
+        <div class="para">
+            This gives us 11*11 = 121 possible combinations of p and g. We can narrow this down further by looking at the checks on p and g performed, telling us that at least p or g are a prime number. We can also see that after a number of calls to the generator function using p, g, a and b, the key has to be equal to the b_key as well, reducing our brute force attack surface lesser. <br>
+            <br>
+            Now that we know how to generate possible values of p and g that pass the program’s checks, we can generate possible values of shared_key, and begin to reverse the encryption functions of the program.
+        </div>
+        <div class="miniheader">Reversing the encrypt function</div>
+        <div class="para">
+            The ascii character for every value in the plaintext is multiplied by key and 311 and the result is appended to an array. So for every element in the array, we have to divide it by 311 and then divide it by the key, and find the character whose ascii value is equal to the result.
+        </div>
+        <div class="code">
+            def decrypt(ciphertext, key): <br>
+            &emsp;plaintext = "" <br>
+            &emsp;for element in ciphertext: <br>
+            &emsp;&emsp;plaintext += chr(element // 311 // key) <br>
+            &emsp;return plaintext <br>
+        </div>
+        <div class="miniheader">Reversing the dynamic_xor_encrypt</div>
+        <div class="para">
+            One crucial property about xor is that its completely reversible, meaning that when A XOR B = C: <br>
+            <br>
+            1. C XOR B = A <br>
+            2. C XOR A = B <br>
+            3. B XOR A = C <br>
+            <br>
+            So if we know two variables like the cipher_text and text_key we can just XOR them together to get the plaintext. <br>
+            <br>
+            To reverse this, we can just take each character in our cipher_text, XOR it using the same character from the key (using the same repeating key pattern), and then reverse that to get the plaintext!
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/Custom Encryption - PicoCTF 2024/decryption-example.png" alt="">
+        </div>
+        <div class="code">
+            def dynamic_xor_decrypt(ciphertext, text_key): <br>
+            &emsp;plaintext = "" <br>
+            &emsp;key_length = len(text_key) <br>
+            &emsp;for i,char in enumerate(ciphertext): <br>
+            &emsp;&emsp;key_char = text_key[i % key_length] <br>
+            &emsp;&emsp;decrypted_char = chr(ord(char) ^ ord(key_char)) <br>
+            &emsp;&emsp;plaintext += decrypted_char <br>
+            &emsp;return plaintext[::-1] <br>
+        </div>
+        <div class="divider-soft"></div>
+        <div class="subheader">
+            Putting it all together
+        </div>
+        <div class="para">
+            Here are the steps to find the flag: <br>
+            <br>
+            1. Generate possible values of p and g based off of a and b respectively, where at least p or g are prime numbers and the resultant key is equal to b_key <br>
+            2. Decrypt the cipher with our written decrypt() function using the cipher and the calculated shared_key, and save it as semi_cipher <br>
+            3. Use the semi_cipher with text_key as input into our dynamic_xor_decrypt to get our plaintext! <br>
+        </div>
+        <div class="code">
+            def is_prime(p): <br>
+            &emsp;v = 0 <br>
+            &emsp;for i in range(2, p + 1): <br>
+            &emsp;&emsp;if p % i == 0: <br>
+            &emsp;&emsp;&emsp;v = v + 1 <br>
+            &emsp;if v > 1: <br>
+            &emsp;&emsp;return False <br>
+            &emsp;else: <br>
+            &emsp;&emsp;return True <br>
+            <br>
+            def generator(g, x, p): <br>
+            &emsp;return pow(g, x) % p <br>
+            <br>
+            def dynamic_xor_decrypt(ciphertext, text_key): <br>
+            &emsp;plaintext = "" <br>
+            &emsp;key_length = len(text_key) <br>
+            &emsp;for i,char in enumerate(ciphertext): <br>
+            &emsp;&emsp;key_char = text_key[i % key_length] <br>
+            &emsp;&emsp;decrypted_char = chr(ord(char) ^ ord(key_char)) <br>
+            &emsp;&emsp;plaintext += decrypted_char <br>
+            &emsp;return plaintext[::-1] <br>
+            <br>
+            def decrypt(ciphertext, key): <br>
+            &emsp;plaintext = "" <br>
+            &emsp;for element in ciphertext: <br>
+            &emsp;&emsp;plaintext += chr(element // 311 // key) <br>
+            &emsp;return plaintext <br>
+            <br>
+            a = 90 <br>
+            b = 26 <br>
+            text_key = "trudeau" <br>
+            cipher = [61578, 109472, 437888, 6842, 0, 20526, 129998, 526834, 478940, 287364, 0, 567886, 143682, 34210, 465256, 0, 150524, 588412, 6842, 424204, 164208, 184734, 41052, 41052, 116314, 41052, 177892, 348942, 218944, 335258, 177892, 47894, 82104, 116314] <br>
+            <br>
+            list_of_possible_p = range(a,a+10+1) <br>
+            list_of_possible_g = range(b,b+10+1) <br>
+            <br>
+            for possible_p in list_of_possible_p: <br>
+            &emsp;for possible_g in list_of_possible_g: <br>
+            &emsp;&emsp;if not is_prime(possible_p) and not is_prime(possible_g): <br>
+            &emsp;&emsp;&emsp;break <br>
+            &emsp;&emsp;u = generator(possible_g, a, possible_p) <br>
+            &emsp;&emsp;v = generator(possible_g, b, possible_p) <br>
+            &emsp;&emsp;key = generator(v, a, possible_p) <br>
+            &emsp;&emsp;b_key = generator(u, b, possible_p) <br>
+            &emsp;&emsp;if key != b_key: <br>
+            &emsp;&emsp;&emsp;break <br>
+            &emsp;&emsp;shared_key = key <br>
+            &emsp;&emsp;semi_cipher = decrypt(cipher,shared_key) <br>
+            &emsp;&emsp;plain_text = dynamic_xor_decrypt(semi_cipher,text_key) <br>
+            &emsp;&emsp;print(plain_text) <br>
+        </div>
+        <div class="code">
+            (venv) C:\Users\gabbage\Desktop\coding\venv>python custom_decryption.py <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            effr|}{fd`tssrse}srgtg}dyfbpaedgvv <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            f`gydzbmgcwpx~|eLrkwhCdfRP}`edhup <br>
+            effr|}{fd`tssrse}srgtg}dyfbpaedgvv <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            f`gydzbmgcwpx~|eLrkwhCdfRP}`edhup <br>
+            f`g~gzcjgcwpzeA|riwhAdglU}`ediuw <br>
+            picoCTF{custom_d2cr0pt6d_49fbee5b} <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            f`gydzbmgcwpx~|eLrkwhCdfRP}`edhup <br>
+            f`g~gzcjgcwpzeA|riwhAdglU}`ediuw <br>
+            picoCTF{custom_d2cr0pt6d_49fbee5b} <-- here! <br>
+            f`g~gzcjgcwpzeA|riwhAdglU}`ediuw <br>
+            picoCTF{custom_d2cr0pt6d_49fbee5b} <br>
+            effr|}{fd`tssrse}srgtg}dyfbpaedgvv <br>
+            effr|}{fd`tssrse}srgtg}dyfbpaedgvv <br>
+            bgepys~ddgtsrpoewpr{tevd|beqaed{qv <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            bgepys~ddgtsrpoewpr{tevd|beqaed{qv <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            daf}bdigawp}}teyrrctfyd{jns`edcww <br>
+            ėŭþɉфʴЗɝáĒñöȦɥԵs܀Ƒr֬݇dϩٶ۪Ǘ#er׵Ē² <br>
+            ėŭþɉфʴЗɝáĒñöȦɥԵs܀Ƒr֬݇dϩٶ۪Ǘ#er׵Ē² <br>
+        </div>
+        <div class="note">
+            The “here!” has been added in post for readability
+        </div>
+        <div class="para">
+            Thanks for reading!
+        </div>
+        <div class="medium-link">
+            <a href="https://medium.com/@gabbage/custom-encryption-picoctf-2024-5731a2c16544">Read the original here!</a>
+        </div>
+    </div>
+</body>
+</html>
