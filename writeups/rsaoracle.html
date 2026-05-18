@@ -1,0 +1,292 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Encryption - PicoCTF 2024</title>
+    <link rel="stylesheet" href="writeuptemplate.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacquarda+Bastarda+9&family=Micro+5&family=Sixtyfour&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="mainContainer">
+        <div class="story-title quote-font">RSA oracle guide</div>
+        <div class="divider-hard"></div>
+        <div class="para">
+            Challenge Description <br>
+            <br>
+            See the challenge here <br>
+            <br>
+            Name: rsa_oracle <br>
+            <br>
+            Description: <br>
+            <br>
+            Can you abuse the oracle? <br>
+            <br>
+            An attacker was able to intercept communications between a bank and a fintech company. They managed to get the message (ciphertext) and the password that was used to encrypt the message. <br>
+            <br>
+            After some intensive reconassainance they found out that the bank has an oracle that was used to encrypt the password and can be found here nc titan.picoctf.net 65008. Decrypt the password and use it to decrypt the message. The oracle can decrypt anything except the password. <br>
+        </div>
+        <div class="divider-soft"></div>
+        <div class="subheader">Initial thoughts (prep)</div>
+        <div class="miniheader">Gathering the information we get from the challenge</div>
+        <div class="para">
+            We get a file called password.txt and secret.enc <br>
+            <br>
+            Since we know that RSA doesn’t use a password file for encryption, the flag is likely encrypted with: <br>
+        </div>
+        <div class="code">
+            some_encryption_function(flag.txt,password.txt) = secret.enc
+        </div>
+        <div class="note">
+            We will take a look at what the specific encryption function is later
+        </div>
+        <div class="para">
+            Before we decrypt secret.enc, the challenge says that we have to decrypt the password first, likely using the provided RSA oracle <br>
+            <br>
+            Looking at the function, we can just test out how the encryption function works: <br>
+        </div>
+        <div class="code">
+            gabbage-picoctf@webshell:~$ nc titan.picoctf.net 65008 <br>
+            ***************************************** <br>
+            ****************THE ORACLE*************** <br>
+            ***************************************** <br>
+            what should we do for you? <br>
+            E → encrypt D → decrypt. <br>
+            E <br>
+            enter text to encrypt (encoded length must be less than keysize): z <br>
+            z <br>
+            encoded cleartext as Hex m: 7a <br>
+            ciphertext (m ^ e mod n) 4588102403163489123428120224636410617147594689738894402835294478618392742891286573829226143625251019198809190373464518693469406364535800791926759826248951 <br>
+            what should we do for you? <br>
+            E → encrypt D → decrypt. <br>
+            E <br>
+            enter text to encrypt (encoded length must be less than keysize): a <br>
+            a <br>
+            encoded cleartext as Hex m: 61 <br>
+            ciphertext (m ^ e mod n) 1894792376935242028465556366618011019548511575881945413668351305441716829547731248120542989065588556431978903597240454296152579184569578379625520200356186 <br>
+            what should we do for you? <br>
+            E → encrypt D → decrypt. <br>
+        </div>
+        <div class="para">
+            Thus, we can infer the encoding function something along the lines of: <br>
+            <br>
+            1. Get a string ‘a’ <br>
+            2. Get the hex value of that string <br>
+            3. Retrieve the cipher text as (m ^ e mod n) <br>
+            <br>
+            Wait a second. At step 2, you can’t get the hex value of a string! <br>
+            When we attempt it in python… <br>
+        </div>
+        <div class="code">
+            >>> hex('a') <br>
+            Traceback (most recent call last): <br>
+            File "&lt;stdin&gt;", line 1, in &lt;module&gt; <br>
+            TypeError: 'str' object cannot be interpreted as an integer br
+        </div>
+        <div class="para">
+            It appears like hex() function takes only integers. Hmm… are there any ways that we can convert a string to integer? We can use the ord() function to take its ASCII value! <br>
+            Testing our hypothesis…
+        </div>
+        <div class="code">
+            >>> hex(ord('a')) <br>
+            '0x61'
+        </div>
+        <div class="para">
+            Comparing with what we got from the oracle:
+        </div>
+        <div class="code">
+            … <br>
+            enter text to encrypt (encoded length must be less than keysize): a <br>
+            a <br>
+            encoded cleartext as Hex m: 61 <br>
+            … <br>
+        </div>
+        <div class="para">
+            Our hypothesis is correct! <br>
+            <br>
+            But wait a second, we can’t do (m ^ e mod n) with m being a hex value! If we just assume that it is an integer (by stripping the ‘0x’, which is what I tried doing in the first place), it wouldn’t work for values like z where hex(ord(‘z’)) = 0x7a. <br>
+            <br>
+            Therefore, it likely uses m as its integer value by changing it using m = int(hex_value_of_m,16) in order for step 3 to work. So, when it displays the value of hex(m), it doesn’t realistically use hex(m) anywhere else along its encoding, but uses hex_to_int(hex(m)) for the encryption. Basically its just for display :P <br>
+            <br>
+            Also, ord(string) only works for one character. What happens when we input multiple characters, like ‘aa’? We can test this: <br>
+        </div>
+        <div class="code">
+            enter text to encrypt (encoded length must be less than keysize): aa <br>
+            aa <br>
+            encoded cleartext as Hex m: 6161 <br>
+            ciphertext (m ^ e mod n) 147950756392740340992280723067817265404539599062830301436102936024455313930941827738306883508646622646362182255686930438410358121461463360508403968595919 <br>
+        </div>
+        <div class="para">
+            It encoded our cleartext as 6161, and from our deduction, it uses hex_to_int(hex(‘aa’)), which is hex_to_int(0x6161) <br>
+            <br>
+            We can visualise multi-character encoding with this: <br>
+        </div>
+        <div class="code">
+            h e l l o #split by character <br>
+            68 65 6c 6c 6f #combine each character into their hex representation <br>
+            0x68656c6c6f #combine them as one big hex value <br>
+            448378203247 #convert into int using int("0x68656c6c6f",16) <br>
+        </div>
+        <div class="para">
+            With this we can update our encoding function to: <br>
+            <br>
+            1. Get a string ‘a’ <br>
+            2. Display the hex value of ‘a’ with hex(‘a’) <br>
+            3. Calculate ciphertext as hex_to_int(hex(‘a’))^e % n <br>
+            <br>
+        </div>
+        <div class="miniheader">Looking at RSA decryption techniques</div>
+        <div class="para">
+            We’ll be using a bit of math syntax to illustrate how the decryption is derived, so if you find that yucky, you can skip ahead to the layman explanation. <br>
+            We first define a bunch of parameters: <br>
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/enc1.webp" alt="">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/enc2.webp" alt="">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/enc3.webp" alt="">
+        </div>
+        <div class="para">
+            Where Enc() is the encoding function, Dec() is the decryption function
+        </div>
+        <div class="note">
+            Note: #3 is very important! If you want to read up more on how #3 is derived, see <br>
+            <a href="https://medium.com/asecuritysite-when-bob-met-alice/homomorphic-multiplication-and-division-with-rsa-b45d043141fb">here</a>
+        </div>
+        <div class="para">
+            We want to take advantage of #3 to somehow get the plaintext password, so we define our own value called ourValue <br>
+            From this, we know these values: <br>
+            <br>
+            1. Enc(secret) <br>
+            2. ourValue <br>
+            3. Enc(ourValue) <br>
+            <br>
+            The real challenge is finding secret without doing Dec(Enc(secret)) directly, as it is disallowed. <br>
+            We can find secret by following these steps: <br>
+        </div>
+        <div class="image-frame">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/dec1.webp" alt="">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/dec2.webp" alt="">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/dec3.webp" alt="">
+            <img src="../pics/writeups/RSA Oracle - PicoCTF 2024/dec4.webp" alt="">
+        </div>
+        <div class="para">
+            Alright, that’s a lot of math, but what did we learn? <br>
+            These are the steps that we need to get our secret: <br>
+            <br>
+            1. Determine a value to be set as ourValue <br>            
+            2. Encrypt ourValue with the oracle to get Enc(ourValue) <br>
+            3. Multiply our encrypted secret with Enc(ourValue) <br>
+            4. Decrypt result from step 3 using the oracle <br>
+            5. Divide the result from step 4 to get secret <br>
+            <br>
+        </div>
+        <div class="note">
+            By ourValue, we mean hex_to_int(hex(the string we input)) as it uses the hex_to_int() in the encryption process not the string itself. After all, you cant divide a number by say ‘a’.
+        </div>
+        <div class="para">
+            But wait! There’s a secret 5th step. When we divide that by ourValue, we do get the decrypted form of secret, but its an integer, not a string. Recall from our encoding process that the main encoding process uses the hex_to_int(hex((value)) for encryption. <br>
+            <br>
+            Full process for gettig the final, string version of our password <br>
+        </div>
+        <div class="code">
+            hex_string = format(secret, 'x') #Converts secret from integer to hex <br>
+            secret = bytes.fromhex(hex_string).decode() #Converts secret from hex to a readable string <br>
+        </div>
+        <div class="note">
+            Python doesn’t have a direct hex to string function. Instead, we have to convert our hex value to bytes, and then decode to the bytes to a readable string
+        </div>
+        <div class="subheader">Decrypting secret.enc</div>
+        <div class="para">
+            Even after decrypting password, how do we get the flag back? <br>
+            If we look at secret.enc we get: <br>
+        </div>
+        <div class="code">
+            Salted__g���0' ^� l��h��i���p2Έ�?�Lc}5ڧ��H�|UV;��h@�=��
+        </div>
+        <div class="note">
+            Depending on what you use, you might need to convert secret.enc to secret.txt to view
+        </div>
+        <div class="para">
+            If we search up how to decrypt .enc files, the most common answer is to use openssl <br>
+            The thing is, openssl takes in different encryption types, so which encryption type do we use? According to online the most common encryption types are: <br>
+            <br>
+            1. aes-128-cbc <br>
+            2. aes-256-ecb <br>
+            <br>
+            So we will keep these in mind when getting the flag
+        </div>
+        <div class="subheader">Combining the steps</div>
+        <div class="para">
+            Alright, let’s finalise our plan. <br>
+            <br>
+            1. Determine a value to be set as ourValue <br>
+            2. Encrypt ourValue with the oracle to get Enc(ourValue) <br>
+            3. Multiply our encrypted secret with Enc(ourValue) <br>
+            4. Divide that by ourValue <br>
+            5. Get the plaintext password as the result from step 4 from int to hex then hex to string <br>
+            6. Use openssl enc -d aes-256-dcb -in secret.enc -pass pass:”<password_here>” with our plaintext password to recover our flag
+        </div>
+        <div class="code">
+            from pwn import * <br>
+            from subprocess import run, PIPE <br>
+            p = remote("titan.picoctf.net",64808) <br>
+            with open('./password.txt') as f: <br>
+            &emsp;global password <br>
+            &emsp;password = f.read() <br>
+            <br>
+            #Get Banner plus options menu <br>
+            print(p.recvuntil(b'decrypt.').decode()) <br>
+            p.sendline('E'.encode()) #Give the 'Encode' option <br>
+            p.recvuntil(b':').decode() #Gets until "Enter text to encrypt:" <br>
+            ourValue = 'a' <br>
+            p.sendline(ourValue.encode()) #Sends ourValue ('a') to be encoded <br>
+            data = p.recvuntil(b'decrypt.').decode() #Gets all program output until "…D → decrypt." <br>
+            data = int(data.split(' ')[12][:-6]) #Gets Enc('a') with string splicing <br>
+            log.info(f'data = {data}') <br>
+            toDecrypt = int(password)*data <br>
+            log.info(toDecrypt) <br>
+            <br>
+            #Decrypts toDecrypt <br>
+            p.sendline('D'.encode()) #Sends 'Decode' option <br>
+            p.recvuntil(b':').decode() #Gets "Enter text to encrypt:" <br>
+            p.sendline(str(toDecrypt).encode()) #Sends our payload <br>
+            res = p.recvuntil(b'decrypt.').decode() #Gets all program output until "…D → decrypt." <br>
+            res = res.split(' ')[10].split('\n')[0] <br>
+            secret = int(res,16) // ord(bytes('a','utf-8')) <br>
+            log.success(f'secret = {secret}') <br>
+            secret = secret.to_bytes(len(str(secret)), "big").decode("utf-8").lstrip("\x00") <br>
+            log.success(f'secret = {secret}') <br>
+            p.close() <br>
+            #Now we have our plaintext password, time to crack secret.enc! <br>
+            res = run(["openssl", "enc", "-aes-256-cbc", "-d", "-in", "/Users/spareaccount/Downloads/secret.enc", "-pass", <br>
+            f"pass:{secret}"], stdout=PIPE, stderr=PIPE, text=True) <br>
+            print(res.stdout) <br>
+            print('exit' <br>
+        </div>
+        <div class="code">
+            (venv) (base) gabbage@Gab-2 rsa_oracle % python rsa_oracle-decrypt.py <br>
+            [+] Opening connection to titan.picoctf.net on port 64808: Done <br>
+            ***************************************** <br>
+            ****************THE ORACLE*************** <br>
+            ***************************************** <br>
+            what should we do for you? <br>
+            E → encrypt D → decrypt. <br>
+            [*] data = 1894792376935242028465556366618011019548511575881945413668351305441716829547731248120542989065588556431978903597240454296152579184569578379625520200356186 <br>
+            [*] 4879347969494695763992079257309920962956235340071608197771324952441750870022564003875958517877187374665821306399293178559399723408243829615035132429286786526803773011124941819240588649086684776588479763949051499637834997128787647253068836995761445652838138074231225267441000841604830001446657688224597433724 <br>
+            [+] secret = 215627228002 <br>
+            [+] secret = 24bcb <br>
+            [*] Closed connection to titan.picoctf.net port 64808 <br>
+            picoCTF{yeah-im-not-telling-you-the-flag} <br>
+            exit <br>
+        </div>
+        <div class="para">
+            Thanks for reading!
+        </div>
+        <div class="medium-link">
+            <a href="https://medium.com/@gabbage/rsa-oracle-guide-picoctf-54372033eadb">Read the original here!</a>
+        </div>
+    </div>
+</body>
+</html>
