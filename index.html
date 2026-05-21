@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel's site</title>
+    <title>the gabbage patch</title>
     <link rel="icon" type="image/x-icon" href="./pics/kitkat.png">
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,7 @@
                         <li>23/3/26: Long time no see. Finally fixed timer.</li>
                         <li>26/3/26: Added guestbook! Fixed count up timer. Writeup page still in progress.</li>
                         <li>18/5/26: Added writeups, now you can view my stuff without ads. Hooray!</li>
-
+                        <li>21/5/26: Added QnA section, now you can talk to me!</li>
                     </ul>
                 </div>
                 <h3 class="sixtyfour-font">Credits</h3>
@@ -101,6 +101,25 @@
                                 I was inspired by how Iron Man uses his hands in the air to select stuff on his holographic table, so this site is an attempt of recreating that same effect, but at its very barebones.
                                 Although it is one of my cooler mini-projects, a lot of code was made with the help of generative AI, with the UI being entirely AI generated. So take that as you will.
                             </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="quote-font header" id="qna-header">Commonly asked questions</div>
+                <div id="qna-container" class="micro-5-regular">
+                    <div class="qna-me-message-container">
+                        <div class="qna-chatbubble">Ask me anything!</div>
+                        <img src="./pics/smiley.png" alt="" class="qna-pfp">
+                    </div>
+                    <div id="qna-select-question">
+                        <div id="qna-choices">
+                            <button class="micro-5-regular" onclick="loadmessage(1)">What is your favourite colour?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(2)">Why did you choose this aesthetic?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(3)">Why did you make this site?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(4)">Can I be your net neighbour?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(5)">Is this site coded with AI?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(6)">Am I talking to a real person right now?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(7)">What is a "gabbage"?</button>
+                            <button class="micro-5-regular" onclick="loadmessage(8)">I really HATE your site GRR</button>
                         </div>
                     </div>
                 </div>

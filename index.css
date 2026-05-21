@@ -201,7 +201,7 @@ main-right > form > #submit-button {
     width: 90%;
     height: fit-content;
     border: 1px black solid;
-    background-color: gray;
+    background-image: url('./pics/flower-bg.png');
     padding: 10px
 }
 #dayCounter-header {
@@ -235,6 +235,9 @@ main-left > #links-list {
     list-style-position: inside;
     max-width: 100%;
 }
+#links-list > li > a{
+    color: black;
+}
 main-left > #updateLog-list-container {
     max-height: 100px;
     width: 100%;
@@ -251,4 +254,86 @@ main-left > #updateLog-list-container {
 
 .gif {
     max-width:100%;
+}
+
+#qna-header {
+    margin-bottom: 10px;
+}
+
+#qna-container {
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: scroll;
+    font-size: 1.2rem;
+}
+.qna-me-message-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.qna-you-message-container {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    animation-name: fadeUp;
+    animation-duration: 1s;
+}
+
+#qna-choices {
+    border: 2px solid black;
+    margin: 5px;
+    border-radius: 5px;
+}
+#qna-choices > button {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 100%;
+    text-align: left;
+    background-color: white;
+    font-size: 1.2rem;
+}
+
+#qna-choices > button:hover {
+    animation: turnGrey 0.5s ease-out;
+    background-color:rgb(188, 188, 188) ;
+    cursor: none;
+}
+
+.btn-group button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+}
+
+.qna-pfp {
+    width: 50px;
+    height: 50px;
+}
+
+.qna-chatbubble {
+    border: 2px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: white;
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes turnGrey {
+    0% {
+        background-color: white;
+    }
+    100% {
+        background-color: rgb(188, 188, 188);
+    }
 }
