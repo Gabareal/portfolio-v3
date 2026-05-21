@@ -1,4 +1,4 @@
-name: Deploy to neocities
+name: Deploy to neocities!
 
 # only run on changes to master
 on:
